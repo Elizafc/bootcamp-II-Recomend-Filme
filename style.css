@@ -1,0 +1,163 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f0eb;
+  color: #2d2a24;
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: #3e2c1b;
+}
+
+header p {
+  color: #5e4b38;
+  font-size: 1.1rem;
+}
+
+.filtro {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+.filtro input {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  border: 2px solid #d6c9b8;
+  border-radius: 30px;
+  font-size: 1rem;
+  outline: none;
+  transition: 0.3s;
+  background: white;
+}
+
+.filtro input:focus {
+  border-color: #a67b5b;
+  box-shadow: 0 0 0 3px rgba(166, 123, 91, 0.3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-info {
+  padding: 0.8rem 1rem;
+}
+
+.card-info h3 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  color: #2d2a24;
+}
+
+.card-info p {
+  font-size: 0.9rem;
+  color: #6b5d4e;
+}
+
+.status {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  color: #7a5d4a;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  max-width: 600px;
+  width: 90%;
+  padding: 2rem;
+  border-radius: 16px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.fechar {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #888;
+}
+
+.fechar:hover {
+  color: #333;
+}
+
+.modal-content h2 {
+  margin-bottom: 1rem;
+  color: #3e2c1b;
+}
+
+.modal-content p {
+  margin-bottom: 0.8rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 500px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .card img {
+    height: 200px;
+  }
+}

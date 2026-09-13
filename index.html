@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo Ghibli</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🎬 Estúdio Ghibli</h1>
+    <p>Explore os filmes do lendário estúdio japonês</p>
+  </header>
+
+  <main>
+    <!-- Filtro -->
+    <section class="filtro">
+      <input type="text" id="busca" placeholder="Filtrar por título..." />
+    </section>
+
+    <!-- Grid de cards -->
+    <section id="filmes-container" class="grid">
+      <!-- Os cards serão inseridos pelo JavaScript -->
+    </section>
+
+    <!-- Mensagem de erro / loading -->
+    <div id="status" class="status"></div>
+  </main>
+
+  <!-- Modal de detalhes -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="fechar">&times;</span>
+      <h2 id="modal-titulo"></h2>
+      <p><strong>Diretor:</strong> <span id="modal-diretor"></span></p>
+      <p><strong>Roteirista:</strong> <span id="modal-roteirista"></span></p>
+      <p><strong>Ano:</strong> <span id="modal-ano"></span></p>
+      <p><strong>Sinopse:</strong> <span id="modal-sinopse"></span></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
