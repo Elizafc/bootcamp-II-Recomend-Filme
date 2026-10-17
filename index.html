@@ -41,5 +41,53 @@
   </div>
 
   <script src="script.js"></script>
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    const SUPABASE_URL = "https://SEU-PROJETO.supabase.co";
+    const SUPABASE_ANON_KEY = "SUA_CHAVE_ANON";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Disponibiliza as funções para o escopo global (para o script.js usar)
+    window.supabaseHelpers = {
+      async salvarFavorito(titulo, extra) {
+        const { error } = await supabase
+          .from("favoritos")
+          .insert({ titulo_filme: titulo, dados_extra: extra });
+        if (error) {
+          console.error("Erro ao salvar favorito:", error);
+          return false;
+        }
+        return true;
+      },
+
+      async listarFavoritos() {
+        const { data, error } = await supabase
+          .from("favoritos")
+          .select("*")
+          .order("criado_em", { ascending: true });
+        if (error) {
+          console.error("Erro ao listar favoritos:", error);
+          return [];
+        }
+        return data;
+      },
+
+      async removerFavorito(id) {
+        const { error } = await supabase
+          .from("favoritos")
+          .delete()
+          .eq("id", id);
+        if (error) console.error("Erro ao remover favorito:", error);
+      }
+    };
+    <section id="favoritos-section">
+      <h2>❤️ Meus Favoritos</h2>
+      <div id="favoritos-container"></div>
+    </section>
+    // Dispara um evento para avisar o script.js que o Supabase está pronto
+    window.dispatchEvent(new Event("supabase-ready"));
+  </script>
 </body>
 </html>

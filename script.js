@@ -119,3 +119,51 @@ document.addEventListener('keydown', (e) => {
 
 // Inicialização
 carregarFilmes();
+// Aguarda o Supabase estar pronto
+window.addEventListener("supabase-ready", async () => {
+  await carregarFavoritos();
+});
+
+async function carregarFavoritos() {
+  const favoritos = await window.supabaseHelpers.listarFavoritos();
+  renderizarFavoritos(favoritos);
+}
+
+function renderizarFavoritos(lista) {
+  const containerFavoritos = document.getElementById("favoritos-container");
+  if (!containerFavoritos) return;
+
+  if (lista.length === 0) {
+    containerFavoritos.innerHTML = "<p>Nenhum filme favoritado ainda.</p>";
+    return;
+  }
+
+  containerFavoritos.innerHTML = lista.map(fav => `
+    <div class="favorito-item">
+      <span>${fav.titulo_filme}</span>
+      <button class="btn-remover" data-id="${fav.id}">Excluir</button>
+    </div>
+  `).join("");
+
+  containerFavoritos.querySelectorAll(".btn-remover").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      await window.supabaseHelpers.removerFavorito(btn.dataset.id);
+      await carregarFavoritos();
+    });
+  });
+}
+
+// Dentro do modal, adicione um botão "Favoritar"
+// Exemplo de handler:
+async function favoritarFilmeAtual() {
+  const filme = filmes.find(f => f.id === filmeAtualId);
+  if (!filme) return;
+  const sucesso = await window.supabaseHelpers.salvarFavorito(
+    filme.title,
+    { ghibli_id: filme.id, director: filme.director }
+  );
+  if (sucesso) {
+    await carregarFavoritos();
+    alert("Filme adicionado aos favoritos!");
+  }
+}
