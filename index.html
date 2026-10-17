@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Catálogo Ghibli</title>
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,18 +13,18 @@
   </header>
 
   <main>
-    <!-- Filtro -->
     <section class="filtro">
       <input type="text" id="busca" placeholder="Filtrar por título..." />
     </section>
 
-    <!-- Grid de cards -->
-    <section id="filmes-container" class="grid">
-      <!-- Os cards serão inseridos pelo JavaScript -->
-    </section>
-
-    <!-- Mensagem de erro / loading -->
+    <section id="filmes-container" class="grid"></section>
     <div id="status" class="status"></div>
+
+    <!-- SEÇÃO DE FAVORITOS (Agora no lugar certo) -->
+    <section id="favoritos-section" class="favoritos-section">
+      <h2>❤️ Meus Favoritos</h2>
+      <div id="favoritos-container"></div>
+    </section>
   </main>
 
   <!-- Modal de detalhes -->
@@ -37,60 +36,44 @@
       <p><strong>Roteirista:</strong> <span id="modal-roteirista"></span></p>
       <p><strong>Ano:</strong> <span id="modal-ano"></span></p>
       <p><strong>Sinopse:</strong> <span id="modal-sinopse"></span></p>
+      <!-- BOTÃO FAVORITAR ADICIONADO -->
+      <button id="btn-favoritar" class="btn-favoritar">❤️ Adicionar aos Favoritos</button>
     </div>
   </div>
 
+  <footer>
+    Feito com ❤️ para o Bootcamp II · Dados via Studio Ghibli API
+  </footer>
+
   <script src="script.js"></script>
+
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    const SUPABASE_URL = "https://SEU-PROJETO.supabase.co";
-    const SUPABASE_ANON_KEY = "SUA_CHAVE_ANON";
+    // ATENÇÃO: Cole aqui a URL e a chave Anon do seu painel do Supabase
+    const SUPABASE_URL = "https://uzqxjzkiazfxkvizjegg.supabase.co";
+    const SUPABASE_ANON_KEY = "SUA_CHAVE_ANON_AQUI"; // <-- COLE A SUA CHAVE AQUI
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Disponibiliza as funções para o escopo global (para o script.js usar)
     window.supabaseHelpers = {
       async salvarFavorito(titulo, extra) {
-        const { error } = await supabase
-          .from("favoritos")
-          .insert({ titulo_filme: titulo, dados_extra: extra });
-        if (error) {
-          console.error("Erro ao salvar favorito:", error);
-          return false;
-        }
+        const { error } = await supabase.from("favoritos").insert({ titulo_filme: titulo, dados_extra: extra });
+        if (error) { console.error("Erro ao salvar:", error); return false; }
         return true;
       },
-
       async listarFavoritos() {
-        const { data, error } = await supabase
-          .from("favoritos")
-          .select("*")
-          .order("criado_em", { ascending: true });
-        if (error) {
-          console.error("Erro ao listar favoritos:", error);
-          return [];
-        }
+        const { data, error } = await supabase.from("favoritos").select("*").order("criado_em", { ascending: true });
+        if (error) { console.error("Erro ao listar:", error); return []; }
         return data;
       },
-
       async removerFavorito(id) {
-        const { error } = await supabase
-          .from("favoritos")
-          .delete()
-          .eq("id", id);
-        if (error) console.error("Erro ao remover favorito:", error);
+        const { error } = await supabase.from("favoritos").delete().eq("id", id);
+        if (error) console.error("Erro ao remover:", error);
       }
     };
-    <section id="favoritos-section">
-      <h2>❤️ Meus Favoritos</h2>
-      <div id="favoritos-container"></div>
-    </section>
-    // Dispara um evento para avisar o script.js que o Supabase está pronto
+
     window.dispatchEvent(new Event("supabase-ready"));
   </script>
-  <footer style="text-align:center; margin-top:3rem; color:#7a5d4a; font-size:0.9rem;">
-    Feito com ❤️ para o Bootcamp II · Dados via Studio Ghibli API
-  </footer>
 </body>
 </html>
